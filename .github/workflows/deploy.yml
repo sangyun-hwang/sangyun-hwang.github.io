@@ -1,29 +1,32 @@
-name: Deploy Next.js Blog
+name: Deploy Next.js to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
-  build-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: "pnpm"
+          cache: pnpm
 
       - name: Enable pnpm
         run: corepack enable
 
-      - run: pnpm install
-      - run: pnpm run build
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Deploy to GitHub Pages
+      - name: Build
+        run: pnpm run build
+
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

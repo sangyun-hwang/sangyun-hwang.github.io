@@ -5,12 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "predeploy": "npm run build",
-    "deploy": "touch out/.nojekyll && gh-pages -d out -t true",
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write"
   },
+  "packageManager": "pnpm@9.0.0",
   "dependencies": {
     "next": "16.1.1",
     "react": "19.2.3",
