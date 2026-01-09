@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { BASE_URL } from "@/shared/config/constant";
 
 const BASE_URL = "https://sangyun-hwang.github.io/";
 
