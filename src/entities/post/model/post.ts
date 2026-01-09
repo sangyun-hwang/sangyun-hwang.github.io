@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { ENVIRONMENT } from "@/shared/environment/index";
+import { ENVIRONMENT } from "@/shared/config/environment";
 import { compileMDX } from "next-mdx-remote/rsc";
 import {
   isFirstDateBeforeSecond,
