@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
 2:I[29809,["/_next/static/chunks/9d76b74816565dac.js"],"OutletBoundary"]
 3:"$Sreact.suspense"
-0:{"buildId":"lqY9IafV32rIclVlctxjE","rsc":["$","$1","c",{"children":[["$","main",null,{"children":["$","h1",null,{"className":"text-2xl font-bold","children":"황상윤 블로그 test by 26.01.07"}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"ehxAis7RUZMnlN4iFeKuS","rsc":["$","$1","c",{"children":[["$","main",null,{"children":["$","ul",null,{"children":[["$","li","React 에러 처리하는 방법",{"children":"React 에러 처리하는 방법"}],["$","li","Next.js와 React Query로 SSR 사용하기",{"children":"Next.js와 React Query로 SSR 사용하기"}]]}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
 4:null
