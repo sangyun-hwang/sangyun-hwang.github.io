@@ -1,0 +1,222 @@
+---
+title: Next.js와 React Query로 SSR 사용하기
+description: Next.js와 React Query로 SSR 사용하기
+thumbnail: example
+categories: [frontend, react]
+writeDate: 2024-04-09 22:05:42
+releaseDate: 2024-04-09 22:05:42
+---
+
+> 이 글은 app router 기준으로 작성되었습니다.
+
+Next.js 프로젝트에서 react query를 사용해서 API 연결을 하다보니 페이지들이 전부 CSR이 되어 버렸다. SSR 해보려고 Next.js쓰는건데 이건 아니지 않나 해서 해결책을 찾아보았다.
+
+> react query를 CSR에서 쓸때 생기는 로딩시간이 너무 싫었다.
+<img src="https://velog.velcdn.com/images/shrewslampe/post/5737821e-66de-4775-808d-1de66024267e/image.gif"/>
+
+
+
+react query의 공식 문서를 찾아보니 2가지 방식을 제공했다.
+
+1. `initialData` 를 사용하여 서버에서 fetch한 데이터 사용하기
+2. Hydration API 사용하기
+
+공식 문서에서는 서버의 최신 데이터 유지하기 위해 후자의 방법을 권장하고 있기에 Hydration API 를 사용했다.
+
+## [Hydration API](https://tanstack.com/query/v5/docs/framework/react/guides/ssr#using-the-hydration-apis)
+
+### 적용법
+
+Hydration API사용을 위해서 미리 설정해줘야 하는 것들이 있다.
+
+#### 초기 세팅
+
+``` tsx
+// providers/app.tsx
+'use client'
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        // SSR에서는 클라이언트에서 즉시 refetch하는 것을 피하기 위해
+        // staleTime을 0보다 크게 설정하는 것이 좋다.
+        staleTime: 60 * 1000,
+      },
+    },
+  })
+}
+
+let browserQueryClient: QueryClient | undefined = undefined
+
+function getQueryClient() {
+  if (typeof window === 'undefined') {
+    // Server일 경우
+    // 매번 새로운 queryClient를 만든다.
+    return makeQueryClient()
+  } else {
+    // Browser일 경우
+    // queryClient가 존재하지 않을 경우에만 새로운 queryClient를 만든다.
+    // React가 새 Client를 만들게 하기 위해 중요하다.
+    if (!browserQueryClient) browserQueryClient = makeQueryClient()
+    return browserQueryClient
+  }
+}
+
+export default function Providers({ children }) {
+  // NOTE: queryClient를 useState를 사용하여 초기화 하면 안된다.
+  // suspense boundary가 없을 경우 React의 렌더링이 중단될 수도 있고 
+  // queryClient 자체를 폐기할 수 도 있다.
+  const queryClient = getQueryClient()
+
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  )
+}
+```
+```tsx
+// app/layout.tsx
+import { AppProvider } from "@/providers/app";
+
+export default function RootLayout({ children }: React.PropsWithChildren) {
+  return (
+    <html lang="en">
+      <body>
+        <AppProvider>
+          {children}
+        </AppProvider>
+      </body>
+    </html>
+  );
+}
+```
+기존의 React Query 세팅 방법은 클라이언트에서 QueryClient를 생성하고 이를 계속 이용했다. 하지만 prefecthing 기능을 사용할 경우 서버에서도 QueryClient를 생성하여 사용하기 때문에 서버에서 QueryClient를 생성했을 경우 다시 생성하지 않게 로더 함수에 분기 코드를 작성해줘야 된다.
+
+#### 데이터 prefeching 및 dehydrate (각 라우터에서)
+
+실제로 데이터를 prefeching하여 미리 가져오고 dehydrate하는 방법을 알아보겠다. 우선 prefetch를 수행하기 위한 구성요소를 만들어 준다.
+
+```tsx
+// app/posts/layout.tsx
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import getPosts from "./posts"
+
+export default async function Layout({ children }: React.PropsWithChildren) {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      {children}
+    </HydrationBoundary>
+  );
+}
+```
+```tsx
+// app/posts/page.jsx
+"use client"
+
+export default function Posts() {
+  // useQuery는 Posts뿐만이 아니라 더 깊은 자식에서도 똑같이 사용할 수 있다.
+  // 어느 방식에서든 데이터는 즉시 사용 가능하다.
+  const { data } = useQuery({ queryKey: ['posts'], queryFn: getPosts })
+
+  return (
+    // data가 이미 캐시에 있기때문에 바로 사용 가능하지만 
+    // prettier 나 eslint는 이 정보를 모르기 때문에
+    // 아래와 같이 사용하거나 예외처리하면 된다.
+    {data && <div>{data.title}</div>}
+    )
+}
+```
+이렇게 사용하면 Next.js와 React Query를 함께 사용하여 SSR페이지를 만들 수 있다. 
+
+다음으로는 각 과정을 자세히 알아보자.
+
+## 동작과정
+
+### prefetching
+
+```tsx
+const queryClient = new QueryClient();
+await queryClient.prefetchQuery({
+  queryKey: ["posts"],
+  queryFn: getPosts,
+});
+```
+Layout 컴포넌트는 서버에서 QueryClient를 생성하고, prefetchQuery 메서드를 사용하여 데이터를 비동기로 미리 가져온다. 이때 가져온 데이터는 QueryClient에 캐싱된다. 
+
+```tsx
+const { data } = useQuery({ queryKey: ['posts'], queryFn: getPosts })
+```
+prefetchQuery를 통해 캐시된 데이터를 HydrationBoundary 내부에서 호출할 경우 별도의 api 호출 없이 캐시된 데이터를 서버에서 사용할 수 있게 된다. QueryClient는 서버에서 생성됬기 때문에 불러온 데이터는 HTML파일에 함께 포함되어 SSR 페이지가 생성된다.
+
+
+### dehydrate
+
+캐싱된 QueryClient에서 mutations과 queries를 추출 하는 과정이다.
+
+```tsx
+function dehydrate(client, options = {}) {
+  const filterMutation = options.shouldDehydrateMutation ?? defaultShouldDehydrateMutation;
+  const mutations = client.getMutationCache().getAll().flatMap(
+    (mutation) => filterMutation(mutation) ? [dehydrateMutation(mutation)] : []
+  );
+  const filterQuery = options.shouldDehydrateQuery ?? defaultShouldDehydrateQuery;
+  const queries = client.getQueryCache().getAll().flatMap((query) => filterQuery(query) ? [dehydrateQuery(query)] : []);
+  return { mutations, queries };
+}
+```
+
+dehydrate 메서드의 내용을 보면 인자로 받은 QueryClient에서 mutations과 queries를 추출해서 넘겨 주는 것을 알 수 있다. 이때 추출 된 데이터는 HydrationBoundary에서 사용된다.
+
+### HydrationBoundary
+
+HydrationBoundary는 두가지 역할을 한다.
+
+- HydrationBoundary는 하위에서 캐시된 데이터를 서버에서 사용할 수 있도록 해준다.
+- 캐시된 데이터와 dehydrate된 데이터를 비교하여 가장 최신의 데이터를 유지합니다. 만약 state를 할당하지 않으면 캐시된 데이터를 그대로 사용한다.
+
+
+HydrationBoundary의 내부 코드를 보면
+
+```tsx
+// ... 
+for (const dehydratedQuery of queries) {
+  const existingQuery = queryCache.get(dehydratedQuery.queryHash);
+  if (!existingQuery) {
+    newQueries.push(dehydratedQuery);
+  } else {
+    const hydrationIsNewer = dehydratedQuery.state.dataUpdatedAt > existingQuery.state.dataUpdatedAt;
+    const queryAlreadyQueued = hydrationQueue?.find(
+    (query) => query.queryHash === dehydratedQuery.queryHash
+    );
+    if (hydrationIsNewer && (!queryAlreadyQueued || dehydratedQuery.state.dataUpdatedAt > queryAlreadyQueued.state.dataUpdatedAt)) {
+      existingQueries.push(dehydratedQuery);
+    }
+  }
+}
+// ...
+```
+캐시된 데이터와 dehydrate된 데이터를 데이터를 비교하여 더 최신의 정보로 캐시를 변경해준다. 이를 통해 HydrationBoundary 하위에서 사용되는 데이터들은 항상 최신의 정보를 유지 할 수 있게 된다.
+
+
+## 적용 결과
+
+<img src="https://velog.velcdn.com/images/shrewslampe/post/14f21fe3-feaa-4aa6-ae90-956250eb3858/image.gif"/>
+
+
+레이아웃의 변경도 로딩도 없이 바로바로 로딩이 되서 속이 시원해졌다.
+
+
+> 참고자료
+[Server Rendering & Hydration - 공식문서](https://tanstack.com/query/latest/docs/framework/react/guides/ssr)
+[Advanced Server Rendering](https://tanstack.com/query/v5/docs/framework/react/guides/advanced-ssr)
+[[React-Query] 서버에서 prefetching 한 데이터 사용하기 - LESS BUT BETTER](https://soobing.github.io/react/server-rendering-and-react-query/)
+[[React-Query] Next.js app router에서 사용하면서 고민했던 것들 - LESS BUT BETTER](https://soobing.github.io/react/next-app-router-react-query/)
+[[NextJS] SSR로 초기 화면 로딩 속도를 높여보자 🚀 (+ React Query) - Youngeui Hong](https://velog.io/@youngeui_hong/NextJS-SSR%EB%A1%9C-%EC%B4%88%EA%B8%B0-%ED%99%94%EB%A9%B4-%EB%A1%9C%EB%94%A9-%EC%86%8D%EB%8F%84%EB%A5%BC-%EB%86%92%EC%97%AC%EB%B3%B4%EC%9E%90)
