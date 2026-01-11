@@ -1,8 +1,8 @@
-import type { PostWithFrontmatterType } from "@/entities/post/model/post.type"
+import type { PostWithFrontmatterType } from "@/entities/post/model/post.type";
 
 type PostPageProps = {
   posts: PostWithFrontmatterType[];
-}
+};
 
 const PostPage = ({ posts }: PostPageProps) => {
   return (
@@ -13,7 +13,7 @@ const PostPage = ({ posts }: PostPageProps) => {
         ))}
       </ul>
     </main>
-  )
-}
+  );
+};
 
 export default PostPage;

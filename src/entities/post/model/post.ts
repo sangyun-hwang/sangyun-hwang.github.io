@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import { ENVIRONMENT } from "@/shared/config/environment";
 import { compileMDX } from "next-mdx-remote/rsc";
+import { ENVIRONMENT } from "@/shared/config/environment";
 import {
   isFirstDateBeforeSecond,
   sortByDateDescending,
@@ -79,8 +79,8 @@ export const getCategoryPosts = async (filePath: string) => {
     ENVIRONMENT.NODE_ENV === "development"
       ? validPosts.slice()
       : validPosts.filter(
-        (post) => !isFirstDateBeforeSecond(today, post.releaseDate),
-      );
+          (post) => !isFirstDateBeforeSecond(today, post.releaseDate),
+        );
 
   if (filteredByReleaseDatePosts.length > 1) {
     filteredByReleaseDatePosts.sort((a, b) =>
@@ -118,8 +118,8 @@ export const getAllPosts = async (): Promise<PostWithFrontmatterType[]> => {
     ENVIRONMENT.NODE_ENV === "development"
       ? validPosts.slice()
       : validPosts.filter(
-        (post) => !isFirstDateBeforeSecond(today, post.releaseDate),
-      );
+          (post) => !isFirstDateBeforeSecond(today, post.releaseDate),
+        );
 
   if (filteredByReleaseDatePosts.length > 1) {
     filteredByReleaseDatePosts.sort((a, b) =>

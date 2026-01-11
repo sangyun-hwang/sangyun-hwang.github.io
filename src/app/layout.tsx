@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import {
   BASE_URL,
+  DESCRIPTION,
   OPEN_GRAHPH_IMAGE_NAME,
   SITE_NAME,
-  DESCRIPTION,
 } from "@/shared/config/constant";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
