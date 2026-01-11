@@ -1,6 +1,8 @@
 pre-commit:
   parallel: true
   commands:
+    test:
+      run: echo "PRE-COMMIT WORKS"
     lint:
       run: pnpm run lint:biome
       stage_fixed: true
