@@ -1,4 +1,6 @@
 import type { PostWithFrontmatterType } from "@/entities/post/model/post.type";
+import { PostCard } from "@/entities/post/ui/post/post-card";
+import { cn } from "@/shared/utils/cn";
 
 type PostPageProps = {
   posts: PostWithFrontmatterType[];
@@ -6,10 +8,10 @@ type PostPageProps = {
 
 const PostPage = ({ posts }: PostPageProps) => {
   return (
-    <main>
-      <ul>
+    <main className={cn("md:max-w-3xl md:mx-auto")}>
+      <ul className={cn("list-none p-0")}>
         {posts.map((post) => (
-          <li key={post.title}>{post.title}</li>
+          <PostCard key={post.title} post={post} />
         ))}
       </ul>
     </main>
