@@ -16,7 +16,7 @@ type AnchorProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 export const MDXComponents: mdxComponents = {
   img: (props: HTMLProps<HTMLImageElement>) => {
     return (
-      <span className="my-[16px] items-center relative w-full h-256 md:h-512">
+      <span className="my-4 items-center relative w-full h-256 md:h-512">
         <Image
           src={props.src ?? ""}
           alt={props.alt ?? ""}
