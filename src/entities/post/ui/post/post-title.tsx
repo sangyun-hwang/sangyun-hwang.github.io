@@ -1,6 +1,6 @@
 import { cn } from "@/shared/utils/cn";
 
-export const PostDetailTitle = (props: { children: React.ReactNode }) => {
+export const PostTitle = (props: { children: React.ReactNode }) => {
   return (
     <h1
       className={cn(
