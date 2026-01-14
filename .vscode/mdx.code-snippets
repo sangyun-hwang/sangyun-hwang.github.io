@@ -1,0 +1,28 @@
+{
+  "Post Matter": {
+    "prefix": ["matter", "---"],
+    "description": "Output a file header with the file name and date",
+    "body": [
+      "---",
+      "title: $4",
+      "description: $5",
+      "thumbnail: $6",
+      "tags: ${TM_DIRECTORY/.*[\\\\\\/](.*)/$1/}",
+      "authorName: 황상윤",
+      "authorIcon: authorIcon.webp",
+      "authorIntro: 안녕하세요 황상윤입니다.",
+      "writeDate: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+      "releaseDate: ",
+      "updatedDate: ",
+      "---",
+      "",
+      "$0"
+    ],
+    "scope": "mdx,markdown,markdownreact"
+  },
+  "Current DateTime": {
+    "prefix": ["current_date_time", "cdt"],
+    "description": "Output current DateTime YYYY-MM-DD HH:mm:ss",
+    "body": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND"
+  }
+}
