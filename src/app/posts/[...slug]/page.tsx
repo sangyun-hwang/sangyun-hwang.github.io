@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { getAllPosts, getPost } from "@/entities/post/model/post";
-import type { PostWithFrontmatterType } from "@/entities/post/model/post.type";
 import PostDetailPage from "@/page/post-detail";
 
 type PostProps = {
@@ -9,14 +8,9 @@ type PostProps = {
   };
 };
 
-import type { ReactElement } from "react";
-
-export default async function Post({
-  params,
-}: PostProps): Promise<ReactElement> {
+export default async function Post({ params }: PostProps) {
   const { slug } = await params;
-  const post: PostWithFrontmatterType | null = await getPost(slug);
-  console.log(slug);
+  const post = await getPost(slug);
   if (!post) return redirect("/");
 
   return <PostDetailPage post={post} />;
