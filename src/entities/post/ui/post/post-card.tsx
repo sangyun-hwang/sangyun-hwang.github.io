@@ -7,7 +7,7 @@ interface PostCardProps {
 }
 
 export const PostCard = ({ post }: PostCardProps) => {
-  const postLink = `/posts${post.filePath.join("/")}`;
+  const postLink = `/posts/${post.filePath.join()}`;
 
   return (
     <li className={cn("flex h-full flex-col gap-3")}>
