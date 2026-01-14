@@ -25,9 +25,11 @@ const readDirectory = (directory: string): Pick<PostType, "filePath">[] => {
       if (file.isFile() && path.extname(file.name) === ".mdx") {
         const filePath = fullPath
           .replace(postsDirectory, "")
-          .replace(/\\/g, "")
+          .replace(/\\/g, "/")
+          .replace(/^\/+/, "")
           .replace(/\.mdx$/, "")
-          .split("/");
+          .split("/")
+          .filter(Boolean);
         posts.push({ filePath });
       }
       return posts;
