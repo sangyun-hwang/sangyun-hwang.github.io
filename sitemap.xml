@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://sangyun-hwang.github.io/</loc>
-<lastmod>2026-01-16T14:34:20.206Z</lastmod>
+<loc>https://sangyun-hwang.github.io</loc>
+<lastmod>2026-01-16T14:36:54.387Z</lastmod>
 </url>
 <url>
-<loc>https://sangyun-hwang.github.io//postsexample</loc>
+<loc>https://sangyun-hwang.github.io/posts/example</loc>
 <lastmod>2024-06-07 22:05:42</lastmod>
 </url>
 <url>
-<loc>https://sangyun-hwang.github.io//postsSSR</loc>
+<loc>https://sangyun-hwang.github.io/posts/SSR</loc>
 <lastmod>2024-04-09 22:05:42</lastmod>
 </url>
 </urlset>
