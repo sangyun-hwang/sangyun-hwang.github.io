@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const posts = await getAllPosts();
   const postUrls = posts.map((post) => ({
-    url: `${baseUrl}/posts${post.filePath.join("/")}`,
+    url: `${baseUrl}/posts/${post.filePath.join("/")}`,
     lastModified: post.releaseDate,
   }));
   return [
