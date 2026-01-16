@@ -6,15 +6,15 @@ export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = BASE_URL;
-  const categories = await getCategories();
-  const categoriesUrls = categories.map((category) => ({
-    url: `${baseUrl}/${category}`,
-    lastModified: new Date(),
-  }));
+  // const categories = await getCategories();
+  // const categoriesUrls = categories.map((category) => ({
+  //   url: `${baseUrl}/${category}`,
+  //   lastModified: new Date(),
+  // }));
 
   const posts = await getAllPosts();
   const postUrls = posts.map((post) => ({
-    url: `${baseUrl}/${post.filePath.join("/")}`,
+    url: `${baseUrl}/posts${post.filePath.join("/")}`,
     lastModified: post.releaseDate,
   }));
   return [
@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: baseUrl,
       lastModified: new Date(),
     },
-    ...categoriesUrls,
+    // ...categoriesUrls,
     ...postUrls,
   ];
 }
