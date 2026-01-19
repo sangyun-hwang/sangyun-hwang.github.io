@@ -36,7 +36,7 @@ const generateBreadcrumbs = (
   return [
     {
       label: "home",
-      url: "/",
+      url: "",
       isLast: breadcrumbs.length === 0,
     },
     ...breadcrumbs,
