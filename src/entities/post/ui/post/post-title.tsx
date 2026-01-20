@@ -1,13 +1,13 @@
 import { cn } from "@/shared/utils/cn";
 
-export const PostTitle = (props: { children: React.ReactNode }) => {
+interface PostTitleProps {
+  title: string;
+}
+
+export const PostTitle = ({ title }: PostTitleProps) => {
   return (
-    <h1
-      className={cn(
-        "font-bold text-gray-600 w-full text-4xl md:text-6xl whitespace-pre-wrap my-4",
-      )}
-    >
-      {props.children}
+    <h1 className={cn("text-2640 font-semibold w-full text-seo-600")}>
+      {title}
     </h1>
   );
 };

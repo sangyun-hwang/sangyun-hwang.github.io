@@ -12,7 +12,7 @@ export default function PostDetailPage({ post }: PostPageProps) {
   return (
     <section className={cn("md:max-w-3xl")}>
       <Breadcrumb postTitle={post.title} />
-      <PostTitle>{post.title}</PostTitle>
+      <PostTitle title={post.title} />
       <br />
       <MdxRemote source={post.content} />
     </section>
