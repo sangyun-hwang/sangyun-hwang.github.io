@@ -1,2 +1,78 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@config "../../tailwind.config.ts";
+/* @layer components {
+  .typography {
+    h2 {
+      color: "#212529";
+      font-size: 30;
+      font-weight: 600;
+    }
+    h3 {
+      color: "#212529";
+      font-size: 20;
+      font-weight: 600;
+    }
+    h4 {
+      color: "#212529";
+      font-size: 18;
+      font-weight: 600;
+    }
+    p {
+      color: "#495057";
+      font-size: 16;
+      font-weight: 400;
+    }
+    ul {
+      margin: 0;
+      padding-left: "1.5rem";
+      li {
+        padding: 0;
+        margin: 0;
+      }
+    }
+    li {
+      color: "#495057";
+      font-size: 16;
+      font-weight: 400;
+      &marker {
+        color: "#495057";
+      }
+    }
+    blockquote {
+      background-color: "#F1F3F5";
+      border-inline-start-color: "#495057";
+      border-top-right-radius: "0.25rem";
+      border-bottom-right-radius: "0.25rem";
+      quotes: "none";
+      font-style: "normal";
+      margin: 0;
+      padding: "1rem";
+      p {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    code {
+      color: "#495057";
+      font-weight: 600;
+      padding: "0.1rem 0.3rem";
+      border-radius: 3;
+      background: "#F1F3F5";
+      border: "1px solid #C4CDD7";
+      margin: "0 0.3rem";
+      &before &after {
+        display: "none";
+      }
+    }
+    a {
+      color: #3182ce;
+      &hover {
+        color: #2c5282;
+      }
+    }
+    img {
+      margin: "auto";
+    }
+  }
+} */

@@ -2,11 +2,7 @@ import typography from "@tailwindcss/typography";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       backgroundImage: {
@@ -44,7 +40,7 @@ const config: Config = {
         2640: ["1.625rem", "2.5rem"],
         3240: ["2rem", "2.5rem"],
       },
-      typography: {
+      typography: () => ({
         DEFAULT: {
           css: {
             h2: {
@@ -120,7 +116,7 @@ const config: Config = {
             },
           },
         },
-      },
+      }),
     },
     screens: {
       xs: "320px",
