@@ -7,6 +7,7 @@ import {
   SITE_NAME,
 } from "@/shared/config/constant";
 import "./globals.css";
+import { Header } from "@/shared/common-ui/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,6 +69,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Header />
         {children}
       </body>
     </html>
