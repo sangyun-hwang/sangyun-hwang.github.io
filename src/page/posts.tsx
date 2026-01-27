@@ -11,6 +11,7 @@ const PostPage = ({ posts }: PostPageProps) => {
   return (
     <main className={cn("md:max-w-3xl md:mx-auto")}>
       <Breadcrumb />
+      <br />
       <ul className={cn("list-none p-0")}>
         {posts.map((post) => (
           <PostCard key={post.title} post={post} />
