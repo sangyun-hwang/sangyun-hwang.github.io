@@ -1,8 +1,8 @@
 import { getAllPosts } from "@/entities/post/model/post";
-import PostPage from "@/page/posts";
+import HomePage from "@/page/home-page";
 
 export default async function Home() {
   const posts = await getAllPosts();
 
-  return <PostPage posts={posts} />;
+  return <HomePage posts={posts} />;
 }

@@ -4,6 +4,8 @@ interface PostTitleProps {
 
 export const PostTitle = ({ title }: PostTitleProps) => {
   return (
-    <h1 className="text-2640 font-semibold w-full text-seo-600">{title}</h1>
+    <h1 className="text-5xl leading-16 font-semibold w-full text-gray-600">
+      {title}
+    </h1>
   );
 };
