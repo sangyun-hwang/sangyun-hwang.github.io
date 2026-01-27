@@ -71,13 +71,13 @@ export const Breadcrumb = ({ postTitle }: BreadcrumbProps) => {
         {breadcrumbs.map(({ label, url, isLast }) => (
           <Fragment key={url}>
             {isLast ? (
-              <p className="font-semibold text-seo-600 truncate" title={label}>
+              <p className="font-bold text-seo-600 truncate" title={label}>
                 {label}
               </p>
             ) : (
               <Link
                 href={url}
-                className="hover:underline hover:underline-offset-4"
+                className=" hover:underline hover:underline-offset-4"
                 title={label}
               >
                 {label}
