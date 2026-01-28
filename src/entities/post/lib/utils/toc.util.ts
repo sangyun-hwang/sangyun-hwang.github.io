@@ -5,31 +5,27 @@ export interface TocItem {
 }
 
 export const parseToc = (content: string): TocItem[] => {
-  // 헤더 태그를 찾기위한 정규식 (H2와 H3로 시작하는 문자열 검색)
   const regex = /^(##|###) (.*)$/gm;
+  const matches = [...content.matchAll(regex)];
 
-  // 정규식에 매칭되는 모든 헤더 태그를 배열로 만듬
-  const headingList = content.match(regex);
+  return matches.map((match) => {
+    const headingMarks = match[1]; // ## or ###
+    const rawText = match[2].trim();
 
-  // 매칭된 헤더 태그를 처리하여 목차 아이템 배열을 만듬
-  return (
-    headingList?.map((heading: string) => {
-      // 헤더 태그를 제거하고 텍스트만 추출
-      const text = heading.replace(/^(##|###) /, "").trim();
+    // 마크다운 링크 제거
+    const text = rawText.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
 
-      // 텍스트를 소문자로 변환하고, URL에 사용할 수 있는 형식으로 변환
-      const id = text
-        .toLowerCase()
-        .replace(/\s+/g, "-") // 하나 이상의 연속된 공백을 하이픈으로 대체
-        .replace(/[^\p{L}\p{N}\s-]/gu, ""); // 단어 문자(유니코드), 공백, 하이픈을 제외한 모든 문자를 제거
+    const id = text
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^\p{L}\p{N}\s-]/gu, "");
 
-      return {
-        text, // 헤더 텍스트
-        id, // URL 형식의 링크
-        indent: (heading.match(/#/g)?.length || 2) - 2, // 헤더의 들여쓰기 수준
-      };
-    }) || []
-  );
+    return {
+      text,
+      id,
+      indent: headingMarks.length - 2, // ✅ 정확한 깊이
+    };
+  });
 };
 
 export const getScrollTop = () => {

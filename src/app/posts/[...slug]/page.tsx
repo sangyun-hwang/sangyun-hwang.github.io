@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
+import { parseToc } from "@/entities/post/lib/utils/toc.util";
 import { getAllPosts, getPost } from "@/entities/post/model/post";
-import PostDetailPage from "@/page/post-detail";
+import PostDetailPage from "@/page/post.page";
 
 type PostProps = {
   params: {
@@ -10,11 +11,11 @@ type PostProps = {
 
 export default async function Post({ params }: PostProps) {
   const { slug } = await params;
-  console.log("slug:", slug);
   const post = await getPost(slug);
   if (!post) notFound();
+  const toc = parseToc(post.content);
 
-  return <PostDetailPage post={post} />;
+  return <PostDetailPage post={post} toc={toc} />;
 }
 
 export const generateStaticParams = async (): Promise<{ slug: string[] }[]> => {
