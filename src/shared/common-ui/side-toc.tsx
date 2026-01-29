@@ -100,9 +100,11 @@ export const SideToc = ({ toc }: TocProps) => {
             <li
               key={item.id}
               style={{ marginLeft: item.indent * 12 }}
-              className={`mt-2 text-seo-500  hover:font-semibold ease-in transition-all overflow-x-hidden overflow-y-auto ${
-                activeId === item.id && "text-seo-600 font-semibold scale-105"
-              }`}
+              className={`mt-2 ${
+                activeId === item.id
+                  ? "text-blue-400 font-semibold scale-105"
+                  : "text-seo-500"
+              }   hover:font-bold ease-in transition-all overflow-x-hidden overflow-y-auto `}
             >
               <Link
                 href={`#${item.id}`}

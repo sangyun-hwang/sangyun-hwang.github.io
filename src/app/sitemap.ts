@@ -1,16 +1,11 @@
 import type { MetadataRoute } from "next";
-import { getAllPosts, getCategories } from "@/entities/post/model/post";
+import { getAllPosts } from "@/entities/post/model/post";
 import { BASE_URL } from "@/shared/config/constant";
 
 export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = BASE_URL;
-  // const categories = await getCategories();
-  // const categoriesUrls = categories.map((category) => ({
-  //   url: `${baseUrl}/${category}`,
-  //   lastModified: new Date(),
-  // }));
 
   const posts = await getAllPosts();
   const postUrls = posts.map((post) => ({
@@ -26,7 +21,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/posts`,
       lastModified: new Date(),
     },
-    // ...categoriesUrls,
     ...postUrls,
   ];
 }

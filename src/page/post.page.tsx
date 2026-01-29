@@ -4,6 +4,7 @@ import { MdxRemote } from "@/entities/post/ui/mdx/mdx-remote";
 import { PostTitle } from "@/entities/post/ui/post/post-title";
 import { Breadcrumb } from "@/shared/common-ui/breadcrumb";
 import { SideToc } from "@/shared/common-ui/side-toc";
+import { TopToc } from "@/shared/common-ui/top-toc";
 import { cn } from "@/shared/utils/cn";
 
 type PostPageProps = {
@@ -18,6 +19,7 @@ export default function PostDetailPage({ post, toc }: PostPageProps) {
       <PostTitle title={post.title} />
       <br />
       <div className="relative">
+        <TopToc toc={toc} />
         <SideToc toc={toc} />
         <MdxRemote source={post.content} />
       </div>
