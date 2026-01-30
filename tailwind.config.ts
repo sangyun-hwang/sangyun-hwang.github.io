@@ -112,7 +112,7 @@ const config: Config = {
               },
             },
             img: {
-              margin: "auto",
+              margin: "2rem auto",
             },
           },
         },

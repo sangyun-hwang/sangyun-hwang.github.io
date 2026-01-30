@@ -3,7 +3,6 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkBreaks from "remark-breaks";
-import { cn } from "@/shared/utils/cn";
 import { MDXComponents } from "./mdx-components";
 
 interface MdxRemoteProps {
@@ -12,7 +11,7 @@ interface MdxRemoteProps {
 
 export const MdxRemote: React.FC<MdxRemoteProps> = ({ source }) => {
   return (
-    <article className={cn("prose md:max-w-3xl max-w-full")}>
+    <article className="prose md:max-w-3xl max-w-full mt-10">
       <MDXRemote
         source={source}
         components={MDXComponents}

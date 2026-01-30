@@ -14,22 +14,6 @@ type AnchorProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 // type ElementProps = HTMLAttributes<HTMLElement>;
 
 export const MDXComponents: mdxComponents = {
-  img: (props: HTMLProps<HTMLImageElement>) => {
-    return (
-      <span className="my-4 items-center relative w-full h-256 md:h-512">
-        <Image
-          src={props.src ?? ""}
-          alt={props.alt ?? ""}
-          title={props.alt}
-          aria-label={props.alt || ""}
-          crossOrigin="anonymous"
-          fill={true}
-          objectFit="contain"
-          className=" transition-all duration-200 rounded-md hover:opacity-70"
-        />
-      </span>
-    );
-  },
   a: ({ className, href, ...props }: AnchorProps) => {
     if (!href) return null;
 

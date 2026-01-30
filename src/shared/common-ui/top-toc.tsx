@@ -25,7 +25,7 @@ export const TopToc = ({ toc }: TocProps) => {
   if (!toc) return null;
 
   return (
-    <section className="xl:hidden h-full my-8 px-4 py-4 border rounded-md border-blue-400 bg-gray-50">
+    <section className="xl:hidden h-full my-4 px-4 py-4 border rounded-md border-blue-400 bg-gray-50">
       <div className="text-1830 md:text-2034 text-seo-600 font-semibold">
         목차
       </div>
